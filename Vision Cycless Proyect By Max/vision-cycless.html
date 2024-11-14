@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisionCycless</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            padding: 20px;
+            
+        }
+        .bike-card {
+            margin-bottom: 20px;
+            display: none;
+        }
+        .card {
+            height: 100%;
+        }
+        .card-img-top {
+            object-fit: cover;
+            height: 100%;
+        }
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+        .header {
+            background-color: #ffffff;
+            padding: 20px;
+            text-align: center;
+        }
+        .navbar {
+            margin-bottom: 20px;
+        }
+        .card-text {
+            margin: 10px 0;
+        }
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            margin-top: auto;
+        }
+        footer {
+            background-color: black;
+        }
+        .cart-icon {
+            position: relative;
+            margin-right: 15px;
+        }
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -10px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+        .nav-icons {
+            display: flex;
+            align-items: center;
+        }
+        .nav-icons .nav-item {
+            margin-right: 15px;
+        }
+        .login-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 100;
+        }
+        .login-button a {
+            color: white;
+            text-decoration: none;
+        }
+        .contenido {
+            max-width: 1200px;
+            margin: 40px auto;
+            display: flex;
+        }
+        .mostrador {
+            width: 100%;
+            transition: 0.5s ease;
+        }
+        .fila {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+        .item {
+            max-width: 210px;
+            padding: 30px;
+            height: 250px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+            margin: 0 10px;
+        }
+        .item:hover {
+            background-color: #e6e6e6;
+        }
+        .item img {
+            width: 100%;
+            margin: 30px 0;
+        }
+        .descripcion {
+            color: #707070;
+            font-weight: bold;
+        }
+        .precio {
+            color: #f85151;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .seleccion {
+            transition: 0.5s ease;
+            opacity: 0;
+            width: 0%;
+            border: 1px solid #ccc;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .cerrar {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            cursor: pointer;
+        }
+        .info {
+            padding: 20px;
+        }
+        .info img {
+            display: block;
+            margin: 30px auto;
+            width: 80%;
+        }
+        .info h2 {
+            color: #707070;
+            margin-bottom: 10px;
+        }
+        .info p {
+            font-size: 14px;
+            color: #707070;
+            margin-bottom: 10px;
+        }
+        .info .precio {
+            font-size: 30px;
+            font-weight: bold;
+            color: #f85151;
+            margin-bottom: 10px;
+        }
+        /* Modal de carrito */
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .cart-modal.open {
+            display: flex;
+        }
+        .cart-modal .cart-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 60%;
+            max-width: 500px;
+        }
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+        }
+        .cart-items {
+            margin: 20px 0;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>VisionCycless</h1>
+    </div>
+
+    <!-- Botón de inicio de sesión a la izquierda superior -->
+    <button class="btn btn-secondary login-button">
+        <a href="Login.html">Inicio de sesión</a>
+    </button>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav nav-icons">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-home"></i> Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="openCart()">
+                            <i class="fas fa-shopping-cart cart-icon"></i>
+                            Carrito (<span id="cartCount">0</span>)
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Bicicletas.html">
+                            <i class="fas fa-bicycle"></i> Más bicicletas
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="contenido">
+        <div class="mostrador" id="mostrador">
+            <div class="fila">
+                <div class="item" onclick="cargar(this)">
+                    <img src="https://rockandroad.cl/cdn/shop/files/ZpmBkB5LeNNTxSPG_MY24_700x.webp?v=1725401116" alt="Santa Cruz V10 CC Mullet Kit S Negro">
+                    <p class="descripcion">Santa Cruz V10 CC Mullet Kit S Negro</p>
+                    <span class="precio">$8.490.000</span>
+                </div>
+                <div class="item" onclick="cargar(this)">
+                    <img src="https://specialized.com.tw/cdn/shop/files/95223-07_LEVO-SW-CARBON-G3-GLDPRL-CARB-GLDPRL_HERO_7b49de9e-cd5e-490e-8c3e-1e2e371f2171_600x.png?v=1725249741" alt="S-Works Turbo Levo T-Type">
+                    <p class="descripcion">S-Works Turbo Levo T-Type</p>
+                    <span class="precio">$12.500.000</span>
+                </div>
+                <div class="item" onclick="cargar(this)">
+                    <img src="https://rideshop.cl/cdn/shop/files/Hybrid-Enduro-7-1-Raw-Sachs_600x600_2x_5fff4a22-7bdd-49c3-b253-73d58bc707bb_800x.png?v=1707934795" alt="Nox Hybrid Enduro 7.1 Ultra 2024">
+                    <p class="descripcion">Nox Hybrid Enduro 7.1 Ultra 2024</p>
+                    <span class="precio">$9.390.000</span>
+                </div>
+                <div class="item" onclick="cargar(this)">
+                    <img src="https://rockandroad.cl/cdn/shop/files/c22_c25152u_moterra_neo_crb_1_abb_pd_1_1_700x.jpg?v=1706036233" alt="Cannondale Bicicleta Electrica Moterra Neo Carbon 1">
+                    <p class="descripcion">Cannondale Bicicleta Electrica Moterra Neo Carbon 1</p>
+                    <span class="precio">$4.999.990</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="seleccion" id="seleccion">
+            <span class="cerrar" onclick="cerrar()">x</span>
+            <div class="info">
+                <h2 id="nombreBici"></h2>
+                <img id="imagenBici" src="" alt="">
+                <p id="descripcionBici"></p>
+                <span class="precio" id="precioBici"></span>
+                <div class="btn-container">
+                    <button class="btn btn-danger" onclick="agregarCarrito()">Agregar al carrito</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <!-- Modal carrito -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-content">
+            <div class="cart-header">
+                <h3>Carrito</h3>
+                <button class="btn btn-danger" onclick="closeCart()">Cerrar</button>
+            </div>
+            <div class="cart-items" id="cartItems">
+                <p>No tienes productos en el carrito</p>
+            </div>
+            <div class="btn-container">
+                <button class="btn btn-primary" onclick="Gracias()">Proceder al pago</button>
+                
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let cart = [];
+
+        function cargar(item) {
+            const nombre = item.querySelector('.descripcion').innerText;
+            const precio = item.querySelector('.precio').innerText;
+            const img = item.querySelector('img').src;
+
+            document.getElementById('nombreBici').innerText = nombre;
+            document.getElementById('descripcionBici').innerText = nombre;
+            document.getElementById('precioBici').innerText = precio;
+            document.getElementById('imagenBici').src = img;
+
+            document.getElementById('seleccion').style.opacity = 1;
+            document.getElementById('seleccion').style.width = '50%';
+        }
+
+        function cerrar() {
+            document.getElementById('seleccion').style.opacity = 0;
+            document.getElementById('seleccion').style.width = '0%';
+        }
+
+        function agregarCarrito() {
+            const nombre = document.getElementById('nombreBici').innerText;
+            const precio = document.getElementById('precioBici').innerText;
+            const img = document.getElementById('imagenBici').src;
+
+            const item = { nombre, precio, img };
+            cart.push(item);
+
+            updateCartCount();
+            closeCart();
+        }
+
+        function updateCartCount() {
+            const cartCount = cart.length;
+            document.getElementById('cartCount').innerText = cartCount;
+        }
+
+        function openCart() {
+            const cartModal = document.getElementById('cartModal');
+            cartModal.classList.add('open');
+            const cartItemsContainer = document.getElementById('cartItems');
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<p>No tienes productos en el carrito</p>';
+            } else {
+                cartItemsContainer.innerHTML = cart.map(item => `
+                    <div class="cart-item">
+                        <img src="${item.img}" alt="" width="50">
+                        <span>${item.nombre} - ${item.precio}</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function closeCart() {
+            document.getElementById('cartModal').classList.remove('open');
+        }
+        function Gracias(){
+          window.location.href = "Gracias.html";
+        }
+    </script>
+      <footer class="bg-light text-center text-lg-start mt-5" style="background-color: grey;">
+        <div class="container p-4">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase">Contacto</h5>
+                    <p>
+                        Dirección: Arturo Prat 196, 4070298 Concepción, Bío Bío<br>
+                        Teléfono: +56 9 85670794<br>
+                        Correo: visioncycless@gmail.com
+                    </p>
+                </div>
+    
+                <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase">Acerca de VisionCycless</h5>
+                    <p>En VisionCycless nos dedicamos a ofrecer bicicletas y accesorios de alta calidad para todo tipo de ciclistas. Nos esforzamos por brindar los mejores productos a precios competitivos.</p>
+                </div>
+    
+                <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase">Síguenos</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="https://www.facebook.com/profile.php?id=61568380783456" class="text-dark">Facebook</a></li>
+                        <li><a href="https://www.instagram.com/visioncycless/" class="text-dark">Instagram</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
